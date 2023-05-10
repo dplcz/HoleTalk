@@ -1,0 +1,25 @@
+<svg width="220" height="220" xmlns="http://www.w3.org/2000/svg">
+    <g>
+        <title>Layer 1</title>
+        <rect stroke-width="25" rx="40" id="svg_1" height="120" width="120" y="21.66667" x="50" stroke="#8b53ff"
+              fill="none"/>
+        <rect id="svg_2" height="0.33333" width="0" y="50.02878" x="130.16334" stroke="#8b53ff" fill="#fff"/>
+        <path id="svg_3"
+              d="m-103.31249,31.45656l0.56913,0l0.17587,-0.54067l0.17587,0.54067l0.56913,0l-0.46044,0.33415l0.17588,0.54067l-0.46044,-0.33416l-0.46044,0.33416l0.17588,-0.54067l-0.46044,-0.33415z"
+              stroke-width="10" stroke="#8B4D4B" fill="none"/>
+        <rect id="svg_4" height="15" width="10" y="43.33334" x="105" stroke-width="20" stroke="#8b53ff" fill="none"/>
+        <path id="svg_6"
+              d="m-47.59248,26.15537l0.56913,0l0.17587,-0.12732l0.17587,0.12732l0.56913,0l-0.46044,0.07869l0.17588,0.12732l-0.46044,-0.07869l-0.46044,0.07869l0.17588,-0.12732l-0.46044,-0.07869z"
+              stroke-width="10" stroke="#8B4D4B" fill="none"/>
+        <text transform="matrix(1 0 0 1 0 0)" font-style="normal" font-weight="bold" xml:space="preserve"
+              text-anchor="start" font-size="40" id="svg_11" y="215.02875" x="27.70571" stroke-width="0"
+              stroke="#f97777" fill="#fe66c4">HoleTalk</text>
+        <path fill="#8b53ff" stroke="#f97777" stroke-width="0" opacity="NaN"
+              d="m-39.49685,-91.02888l12.50318,-0.02867l-12.50318,0.02867z" id="svg_27"/>
+        <path fill="#8b53ff" stroke="#f97777" stroke-width="0" opacity="NaN" d="m104.49669,106.6952" id="svg_35"/>
+        <path transform="rotate(1 109.702 160.523)" stroke="#f97777" fill="#8b53ff" stroke-width="0" opacity="1"
+              d="m124.4639,173.89816c-29.04842,0 -29.04842,-25.81641 -29.52328,-25.89043c0.47485,0.074 29.52328,-0.78654 29.04842,-0.86055"
+              id="svg_37"/>
+        <rect id="svg_7" height="18" width="10" y="103.66666" x="105" stroke-width="20" stroke="#8b53ff" fill="none"/>
+    </g>
+</svg>
