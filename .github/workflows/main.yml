@@ -71,6 +71,7 @@ jobs:
           cp ./conf/config.ini ./dist
           cp ./icon.ico ./dist
           cp ./settings.json ./dist
+          cp -r ./images ./dist
           tar -zcvf release-mac.tgz dist
 
       # 发布 Release
