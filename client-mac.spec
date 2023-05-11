@@ -17,7 +17,7 @@ a = Analysis(
     win_private_assemblies=False,
     cipher=block_cipher,
     noarchive=False,
-    version='software_version.txt',
+
 )
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
@@ -40,4 +40,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='icon.ico',
+    version='software_version.txt',
 )
