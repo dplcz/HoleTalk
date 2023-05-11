@@ -1,0 +1,96 @@
+name: Publish And Deploy
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  win-build-and-deploy:
+    runs-on: windows-2022
+    needs: mac-build-and-deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      - name: install and build
+        run: |
+          pip install -r requirements.txt
+          Move-Item .\opus_win\__init__.py $env:Python3_ROOT_DIR\lib\site-packages\opuslib\api -force
+          pyinstaller client.spec
+          tar -zcvf release-win.tgz dist
+
+    # 发布 Release
+#      - name: Create Release
+#        id: create_release
+#        uses: actions/create-release@master
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+#        with:
+#          tag_name: ${{ github.ref }}
+#          release_name: Release ${{ github.ref }}
+#          draft: false
+#          prerelease: false
+
+      # 上传构建结果到 Release
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          upload_url: ${{ needs.mac-build-and-deploy.outputs.upload_url }}
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-win.tgz
+          asset_name: release-win.tgz
+          asset_content_type: application/x-tgz
+
+  mac-build-and-deploy:
+    runs-on: macos-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      - name: install and build
+        run: |
+          pip install -r requirements.txt
+          cp ./opus_mac/__init__.py $Python3_ROOT_DIR/lib/python3.8/site-packages/opuslib/api
+          pyinstaller client-mac.spec
+          cp ./conf/config.ini ./dist
+          tar -zcvf release-mac.tgz dist
+
+      # 发布 Release
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      # 上传构建结果到 Release
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-mac.tgz
+          asset_name: release-mac.tgz
+          asset_content_type: application/x-tgz
