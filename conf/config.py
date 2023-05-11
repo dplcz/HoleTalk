@@ -8,9 +8,9 @@ class Conf:
         self.conf = configparser.ConfigParser()
         self._root_path = os.path.dirname(os.path.abspath(__file__))
         self._file_path = os.path.join('{}/{}'.format(self._root_path, filename))
-        try:
+        if os.path.isfile(self._file_path):
             self.conf.read(self._file_path, encoding='utf-8')
-        except FileNotFoundError:
+        else:
             self._file_path = os.path.join('./{}'.format(filename))
             self.conf.read(self._file_path, encoding='utf-8')
 
