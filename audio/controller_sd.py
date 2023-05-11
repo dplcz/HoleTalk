@@ -100,6 +100,8 @@ class AudioController:
         self._current_seq = 0
         self._output_queue = None
 
+        self._mic_flag = True
+
         self._logger = logging.getLogger(__name__)
 
     def _judge_voice(self, indata: np.ndarray) -> bool:
@@ -268,11 +270,14 @@ class AudioController:
         else:
             in_data = indata[:]
         try:
-            if self._threshold > 0:
-                if self._judge_voice(in_data):
-                    pass
-                else:
-                    in_data[:] = 0
+            if self._mic_flag:
+                if self._threshold > 0:
+                    if self._judge_voice(in_data):
+                        pass
+                    else:
+                        in_data[:] = 0
+            else:
+                in_data[:] = 0
             # if self._noise:
             #     if self._zip_frames >= 1:
             #         self._frames.append(in_data)
@@ -519,6 +524,9 @@ class AudioController:
         else:
             with sd.RawStream(**args) as self.stream:
                 event.wait()
+
+    def change_mic(self, flag):
+        self._mic_flag = flag
 
 
 if __name__ == '__main__':

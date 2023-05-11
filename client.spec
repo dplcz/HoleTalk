@@ -5,9 +5,9 @@ block_cipher = None
 
 
 a = Analysis(
-    ['client.py'],
+    ['main.py'],
     pathex=['.'],
-    binaries=[('./libopus-0.dll','.'),('./librosa','./librosa')],
+    binaries=[('./libopus-0.dll','.'),('./librosa','./librosa'),('./settings.json','.'),('./images','./images'),('icon.ico','.')],
     datas=[('./conf/config.ini','./conf')],
     hiddenimports=[],
     hookspath=[],
@@ -26,38 +26,19 @@ exe1 = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='client',
+    name='HoleSpeak',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-)
-
-exe2 = EXE(
-    pyz,
-    a.scripts,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    [],
-    exclude_binaries=False,
-    name='DPspeak',
-    debug=False,
-    bootloader_ignore_signals=False,
-    strip=False,
-    upx=True,
-    console=True,
-    disable_windowed_traceback=False,
-    argv_emulation=False,
-    target_arch=None,
-    codesign_identity=None,
-    entitlements_file=None,
+    icon='icon.ico',
+    version='software_version.txt',
 )
 
 coll = COLLECT(
@@ -68,5 +49,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='client',
+    name='HoleSpeak',
 )

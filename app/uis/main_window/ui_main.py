@@ -1357,7 +1357,7 @@ class Ui_MainWindow(object):
         self.connect_page.setText("")
         self.pushButton_5.setText("")
         self.search_line_edit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search messages", None))
-        self.label_top.setText(QCoreApplication.translate("MainWindow", u"Signal 80%", None))
+        self.label_top.setText(QCoreApplication.translate("MainWindow", u"Wait For Connection", None))
         self.label_bottom.setText(QCoreApplication.translate("MainWindow", u"HoleTalk Sever Sia", None))
         self.title_bar.setText("")
         # if QT_CONFIG(tooltip)

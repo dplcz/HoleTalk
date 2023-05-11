@@ -4,4 +4,4 @@ noisereduce==2.0.1
 opuslib==3.0.1
 numpy==1.23.5
 scipy==1.9.3
-pyinstaller==5.7.0
+pyside6

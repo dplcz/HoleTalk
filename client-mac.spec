@@ -5,9 +5,9 @@ block_cipher = None
 
 
 a = Analysis(
-    ['client.py'],
+    ['main.py'],
     pathex=['.'],
-    binaries=[('./libopus.0.dylib','.'),('./librosa','./librosa')],
+    binaries=[('./libopus.0.dylib','.'),('./librosa','./librosa'),('./settings.json','.'),('./images','./images'),('icon.ico','.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -17,6 +17,7 @@ a = Analysis(
     win_private_assemblies=False,
     cipher=block_cipher,
     noarchive=False,
+    version='software_version.txt',
 )
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
@@ -28,7 +29,7 @@ exe = EXE(
     a.datas,
     [],
     exclude_binaries=False,
-    name='DPspeak',
+    name='HoleSpeak',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

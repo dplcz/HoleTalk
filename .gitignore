@@ -20,6 +20,7 @@ lib64/
 parts/
 sdist/
 var/
+venv/
 wheels/
 share/python-wheels/
 *.egg-info/
@@ -141,3 +142,5 @@ cython_debug/
 */*.dll
 *.wav
 *.opus
+
+*.db

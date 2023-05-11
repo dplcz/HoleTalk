@@ -527,6 +527,8 @@ class MainWindow(QMainWindow):
                 self.text_thread.add_msg_signal.emit(text)
             elif text[1] == 'statistics':
                 self.text_thread.add_statistics_signal.emit(text)
+            elif text[1] == 'connect_error':
+                self.text_thread.add_statistics_signal.emit(text)
 
     def add_msg(self, text):
         if text[2]:
@@ -534,7 +536,10 @@ class MainWindow(QMainWindow):
 
     def set_statistics_info(self, text):
         numbers = re.findall(number_pattern, text[0])
-        self.ui.label_top.setText(' '.join(numbers))
+        if len(numbers) != 0:
+            self.ui.label_top.setText(' '.join(numbers))
+        else:
+            self.ui.label_top.setText(text[0])
 
     def show_context_menu(self, pos):
         # 显示上下文菜单
@@ -637,9 +642,11 @@ class MainWindow(QMainWindow):
         self.mic = not self.mic
         if self.mic:
             self.chat.page.btn_mic_top.setStyleSheet('background-image: url(:/icons_svg/images/icons_svg/mic.svg);')
+            self.client.change_mic(self.mic)
         else:
             self.chat.page.btn_mic_top.setStyleSheet(
                 'background-image: url(:/icons_svg/images/icons_svg/ic_mic_off.svg);')
+            self.client.change_mic(self.mic)
 
     def change_voice(self):
         self.voice = not self.voice

@@ -1,0 +1,347 @@
+﻿
+[Header]
+ProjectFileVersion = 1.1
+[General]
+Program name = HoleSpeak
+Program version = 1.0.0
+Windows 2000 = 0
+Windows XP = 1
+Windows Server 2003 = 1
+Windows Vista = 1
+Windows Server 2008 = 1
+Windows 7 = 1
+Windows 8 = 1
+Windows 10 = 1
+Windows Server 2016 = 1
+DoNotCheckOS = 0
+Company name = DPLCZ
+Website = 
+SFA = 0
+DFA = 1
+Comp = 1
+[Graphics]
+Wizard image = <main>
+Header image = <main>
+Show Label = 1
+VisualStylesEnabled = 1
+[Files]
+Installation path = <ProgramFiles>\<Company>\<AppName>\
+Autcip = 1
+[Uninstall]
+Vwau = 0
+Website = https://
+Include uninstaller = 1
+Uninstaller filename = Uninstall
+UseCustomDisplayIcon = 0
+CustomDisplayIcon = <InstallPath>\
+[Licence]
+Licence dialog = 0
+[Finish]
+Sart program = 1
+Reboot computer = 0
+Program = <InstallPath>\HoleSpeak.exe
+ProgramArguments = 
+[Shortcuts]
+Allowtc = 0
+Shortcut path = <Company>\<AppName>\
+[Serialoptions]
+Allows = 0
+Number = 1000
+Mask = #####-#####-#####-#####
+[SplashScreen]
+Image = 
+Sound = 
+Time = 2
+PlaySound = 0
+Allow = 0
+[Build]
+File = C:\Users\NuNuKing\Desktop\HoleSpeakInstaller.exe
+SetupIconPath = ..\icons\ancient.ico
+UninstallIconPath = ..\icons\ancient.ico
+CompressionMethod = 0
+CompressionLevel = 2
+[Updater]
+Allow = 0
+1 = <AppName>
+2 = <AppVersion>
+3 = http://
+4 = http://
+5 = http://
+6 = Update
+Language = 0
+RunProg = 
+RunProgs = 0
+Execdlls = 0
+[Languages]
+[Files/Dirs]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_asyncio.pyd
+64.5 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_bz2.pyd
+85 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_cffi_backend.cp39-win_amd64.pyd
+177 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_ctypes.pyd
+124.5 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_decimal.pyd
+265.5 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_elementtree.pyd
+186.5 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_hashlib.pyd
+64 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_lzma.pyd
+160 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_multiprocessing.pyd
+30.5 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_overlapped.pyd
+46 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_queue.pyd
+29.5 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_socket.pyd
+79 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_sqlite3.pyd
+88.5 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_ssl.pyd
+152.5 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-console-l1-1-0.dll
+18.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-datetime-l1-1-0.dll
+18.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-debug-l1-1-0.dll
+18.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-errorhandling-l1-1-0.dll
+18.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-file-l1-1-0.dll
+21.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-file-l1-2-0.dll
+18.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-file-l2-1-0.dll
+18.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-handle-l1-1-0.dll
+18.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-heap-l1-1-0.dll
+18.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-interlocked-l1-1-0.dll
+18.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-libraryloader-l1-1-0.dll
+18.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-localization-l1-2-0.dll
+20.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-memory-l1-1-0.dll
+18.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-namedpipe-l1-1-0.dll
+18.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-processenvironment-l1-1-0.dll
+19.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-processthreads-l1-1-0.dll
+20.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-processthreads-l1-1-1.dll
+18.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-profile-l1-1-0.dll
+17.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-rtlsupport-l1-1-0.dll
+18.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-string-l1-1-0.dll
+18.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-synch-l1-1-0.dll
+20.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-synch-l1-2-0.dll
+18.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-sysinfo-l1-1-0.dll
+19.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-timezone-l1-1-0.dll
+18.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-core-util-l1-1-0.dll
+17.4 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-conio-l1-1-0.dll
+19.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-convert-l1-1-0.dll
+22.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-environment-l1-1-0.dll
+18.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-filesystem-l1-1-0.dll
+20.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-heap-l1-1-0.dll
+19.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-locale-l1-1-0.dll
+18.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-math-l1-1-0.dll
+26.4 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-private-l1-1-0.dll
+69.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-process-l1-1-0.dll
+19.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-runtime-l1-1-0.dll
+21.9 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-stdio-l1-1-0.dll
+24.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-string-l1-1-0.dll
+24.3 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-time-l1-1-0.dll
+20.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\api-ms-win-crt-utility-l1-1-0.dll
+18.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\base_library.zip
+1014.3 KB
+zip
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\HoleSpeak.exe
+6.7 MB
+exe
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\icon.ico
+4.2 KB
+ico
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\libcrypto-1_1.dll
+3.3 MB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\libffi-7.dll
+32 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\libopenblas.FB5AE2TYXYH2IJRDKGDGQ3XBKLKTF43H.gfortran-win_amd64.dll
+34 MB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\libopus-0.dll
+336 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\libssl-1_1.dll
+682.4 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\pyexpat.pyd
+201 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\python3.dll
+59 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\python39.dll
+4.3 MB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\select.pyd
+29 KB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\settings.json
+397 Byte
+json
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\sqlite3.dll
+1.5 MB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\ucrtbase.dll
+977.8 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\unicodedata.pyd
+1.1 MB
+pyd
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\VCRUNTIME140.dll
+94.9 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\VCRUNTIME140_1.dll
+36.4 KB
+dll
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\_sounddevice_data\
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\conf\
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\images\
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\librosa\
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\markupsafe\
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\psutil
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\PySide6
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\scipy
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\scipy.libs
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\setuptools-65.5.1.dist-info
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\shiboken6
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\wheel-0.38.4.dist-info
+N/A
+[Folder]
+D:\py_code\DPspeak\holespeak\dist\HoleSpeak\numpy
+N/A
+[Folder]
+[Licence_Begin]
+136
+{\rtf1\ansi\ansicpg936\deff0\deflang1033\deflangfe2052{\fonttbl{\f0\fnil\fcharset0 Arial;}}
+\viewkind4\uc1\pard\lang2052\fs20\par
+}
+ [Licence_End]
+[Registry]
+[Variables]
+[SCs]
+Desktop
+HoleSpeak
+<InstallPath>\HoleSpeak.exe
+
+
+0
+[IFP_End]
+[Serials]
+[Serials_End]
+[Commands]

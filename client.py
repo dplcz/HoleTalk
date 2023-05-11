@@ -117,10 +117,10 @@ class UDPClient:
         if not self._ui:
             if level == 'debug':
                 self._logger.debug(text)
-            elif level == 'info' or level == 'statistics':
-                self._solve_text(text, 'info')
+            elif level == 'info' or level == 'statistics' or level == 'connect_error':
+                self._logger.info(text)
             elif level == 'error':
-                self._solve_text(text, 'error')
+                self._logger.error(text)
         else:
             self.text_output.put((text, level, server))
 
@@ -502,6 +502,7 @@ class UDPClient:
                 if len(temp_set) < self._cur_connections_count or 1 <= reconnect_times < 5:
                     if reconnect_times == 0:
                         self._solve_text('connection is break!!', 'error')
+                        self._solve_text('disconnection', 'connect_error')
                         self._cur_connections_count = len(temp_set)
                 if len(temp_set) == 0:
                     self._cur_channel = 0
@@ -509,6 +510,7 @@ class UDPClient:
             except socket.timeout:
                 if report_flag:
                     self._solve_text('timeout', 'error')
+                    self._solve_text('timeout', 'connect_error')
                     self._cur_channel = 0
                     report_flag = False
 
@@ -673,6 +675,9 @@ class UDPClient:
             event = threading.Event()
             self._audio.init_stream(self._sock, self._head, self._connected_addr, 1, event,
                                     noise=False, stationary=False, logger=self._logger)
+
+    def change_mic(self, flag):
+        self._audio.change_mic(flag)
 
     def signal_handler(self, temp_signal, frame):
         self._beat_flag = False
