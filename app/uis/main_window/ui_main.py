@@ -15,12 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
                            QFont, QFontDatabase, QGradient, QIcon,
                            QImage, QKeySequence, QLinearGradient, QPainter,
                            QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFormLayout, QFrame,
-                               QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-                               QLayout, QLineEdit, QMainWindow, QPushButton,
-                               QRadioButton, QScrollArea, QSizePolicy, QSlider,
-                               QSpacerItem, QStackedWidget, QTableWidget, QTableWidgetItem,
-                               QTextEdit, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFormLayout, QFrame, QHBoxLayout,
+                               QLabel, QLayout, QLineEdit, QMainWindow,
+                               QPushButton, QScrollArea, QSizePolicy, QSpacerItem,
+                               QStackedWidget, QVBoxLayout, QWidget)
 from .resources_rc import *
 
 
@@ -782,6 +780,7 @@ class Ui_MainWindow(object):
                                       "}\n"
                                       "\n"
                                       "")
+
         self.margins_app = QVBoxLayout(self.stylesheet)
         self.margins_app.setSpacing(0)
         self.margins_app.setObjectName(u"margins_app")
@@ -1151,180 +1150,6 @@ class Ui_MainWindow(object):
         self.chat_layout.setSpacing(0)
         self.chat_layout.setObjectName(u"chat_layout")
         self.chat_layout.setContentsMargins(0, 0, 0, 0)
-        self.groupBox = QGroupBox(self.chat)
-        self.groupBox.setObjectName(u"groupBox")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy1.setHorizontalStretch(40)
-        sizePolicy1.setVerticalStretch(20)
-        sizePolicy1.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
-        self.groupBox.setSizePolicy(sizePolicy1)
-        self.verticalLayout_10 = QVBoxLayout(self.groupBox)
-        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.verticalSpacer_7 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Preferred)
-
-        self.verticalLayout_10.addItem(self.verticalSpacer_7)
-
-        self.groupBox_2 = QGroupBox(self.groupBox)
-        self.groupBox_2.setObjectName(u"groupBox_2")
-        self.verticalLayout_8 = QVBoxLayout(self.groupBox_2)
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.horizontalLayout_3 = QHBoxLayout()
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalSpacer_16 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_16)
-
-        self.label = QLabel(self.groupBox_2)
-        self.label.setObjectName(u"label")
-
-        self.horizontalLayout_3.addWidget(self.label)
-
-        self.horizontalSpacer_17 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_17)
-
-        self.server_addr_text = QLineEdit(self.groupBox_2)
-        self.server_addr_text.setObjectName(u"server_addr_text")
-
-        self.horizontalLayout_3.addWidget(self.server_addr_text)
-
-        self.horizontalSpacer_18 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_18)
-
-        self.label_2 = QLabel(self.groupBox_2)
-        self.label_2.setObjectName(u"label_2")
-
-        self.horizontalLayout_3.addWidget(self.label_2)
-
-        self.horizontalSpacer_19 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_19)
-
-        self.server_pass_text = QLineEdit(self.groupBox_2)
-        self.server_pass_text.setObjectName(u"server_pass_text")
-
-        self.horizontalLayout_3.addWidget(self.server_pass_text)
-
-        self.horizontalSpacer_20 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_20)
-
-        self.connectButton = QPushButton(self.groupBox_2)
-        self.connectButton.setObjectName(u"connectButton")
-
-        self.horizontalLayout_3.addWidget(self.connectButton)
-
-        self.horizontalSpacer_21 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-
-        self.horizontalLayout_3.addItem(self.horizontalSpacer_21)
-
-        self.verticalLayout_8.addLayout(self.horizontalLayout_3)
-
-        self.verticalLayout_10.addWidget(self.groupBox_2)
-
-        self.verticalSpacer_6 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Preferred)
-
-        self.verticalLayout_10.addItem(self.verticalSpacer_6)
-
-        self.horizontalLayout_4 = QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.verticalLayout_9 = QVBoxLayout()
-        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.micCheckRadio = QRadioButton(self.groupBox)
-        self.micCheckRadio.setObjectName(u"micCheckRadio")
-
-        self.verticalLayout_9.addWidget(self.micCheckRadio)
-
-        self.micCheckSlider = QSlider(self.groupBox)
-        self.micCheckSlider.setObjectName(u"micCheckSlider")
-        self.micCheckSlider.setOrientation(Qt.Horizontal)
-
-        self.verticalLayout_9.addWidget(self.micCheckSlider)
-
-        self.micRadio = QRadioButton(self.groupBox)
-        self.micRadio.setObjectName(u"micRadio")
-
-        self.verticalLayout_9.addWidget(self.micRadio)
-
-        self.micSlider = QSlider(self.groupBox)
-        self.micSlider.setObjectName(u"micSlider")
-        self.micSlider.setOrientation(Qt.Horizontal)
-
-        self.verticalLayout_9.addWidget(self.micSlider)
-
-        self.horizontalLayout_4.addLayout(self.verticalLayout_9)
-
-        self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
-
-        self.horizontalLayout_4.addItem(self.horizontalSpacer_22)
-
-        self.textEdit = QTextEdit(self.groupBox)
-        self.textEdit.setObjectName(u"textEdit")
-
-        self.horizontalLayout_4.addWidget(self.textEdit)
-
-        self.verticalLayout_10.addLayout(self.horizontalLayout_4)
-
-        self.verticalSpacer_5 = QSpacerItem(20, 60, QSizePolicy.Minimum, QSizePolicy.Preferred)
-
-        self.verticalLayout_10.addItem(self.verticalSpacer_5)
-
-        self.tableWidget = QTableWidget(self.groupBox)
-        if (self.tableWidget.columnCount() < 4):
-            self.tableWidget.setColumnCount(4)
-        __qtablewidgetitem = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(0, __qtablewidgetitem)
-        __qtablewidgetitem1 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(1, __qtablewidgetitem1)
-        __qtablewidgetitem2 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(2, __qtablewidgetitem2)
-        __qtablewidgetitem3 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, __qtablewidgetitem3)
-        if (self.tableWidget.rowCount() < 1):
-            self.tableWidget.setRowCount(1)
-        __qtablewidgetitem4 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(0, __qtablewidgetitem4)
-        __qtablewidgetitem5 = QTableWidgetItem()
-        self.tableWidget.setItem(0, 0, __qtablewidgetitem5)
-        __qtablewidgetitem6 = QTableWidgetItem()
-        self.tableWidget.setItem(0, 1, __qtablewidgetitem6)
-        __qtablewidgetitem7 = QTableWidgetItem()
-        self.tableWidget.setItem(0, 2, __qtablewidgetitem7)
-        self.tableWidget.setObjectName(u"tableWidget")
-        self.tableWidget.setEnabled(True)
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
-        self.tableWidget.setSizePolicy(sizePolicy2)
-        self.tableWidget.setLayoutDirection(Qt.LeftToRight)
-        self.tableWidget.setAutoFillBackground(False)
-        self.tableWidget.setStyleSheet(u"")
-        self.tableWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.tableWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.tableWidget.setDragEnabled(False)
-        self.tableWidget.setAlternatingRowColors(False)
-        self.tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
-        self.tableWidget.setHorizontalScrollMode(QAbstractItemView.ScrollPerItem)
-        self.tableWidget.setSortingEnabled(False)
-        self.tableWidget.setColumnCount(4)
-        self.tableWidget.horizontalHeader().setVisible(True)
-        self.tableWidget.horizontalHeader().setCascadingSectionResizes(True)
-        self.tableWidget.horizontalHeader().setMinimumSectionSize(32)
-        self.tableWidget.horizontalHeader().setDefaultSectionSize(150)
-        self.tableWidget.horizontalHeader().setHighlightSections(True)
-        self.tableWidget.horizontalHeader().setProperty("showSortIndicator", False)
-        self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.verticalHeader().setVisible(False)
-        self.tableWidget.verticalHeader().setCascadingSectionResizes(True)
-        self.tableWidget.verticalHeader().setProperty("showSortIndicator", False)
-        self.tableWidget.verticalHeader().setStretchLastSection(False)
-
-        self.verticalLayout_10.addWidget(self.tableWidget)
-
-        self.chat_layout.addWidget(self.groupBox)
-
         self.app_pages.addWidget(self.chat)
 
         self.verticalLayout_3.addWidget(self.app_pages)
@@ -1342,9 +1167,9 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.stylesheet)
 
         self.retranslateUi(MainWindow)
-        # self.close_app_btn.clicked.connect(MainWindow.close)
+        self.close_app_btn.clicked.connect(MainWindow.close)
 
-        self.app_pages.setCurrentIndex(0)
+        self.app_pages.setCurrentIndex(1)
 
         QMetaObject.connectSlotsByName(MainWindow)
 
@@ -1357,7 +1182,7 @@ class Ui_MainWindow(object):
         self.connect_page.setText("")
         self.pushButton_5.setText("")
         self.search_line_edit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search messages", None))
-        self.label_top.setText(QCoreApplication.translate("MainWindow", u"Wait For Connection", None))
+        self.label_top.setText(QCoreApplication.translate("MainWindow", u"Signal 80%", None))
         self.label_bottom.setText(QCoreApplication.translate("MainWindow", u"HoleTalk Sever Sia", None))
         self.title_bar.setText("")
         # if QT_CONFIG(tooltip)
@@ -1372,32 +1197,4 @@ class Ui_MainWindow(object):
         self.close_app_btn.setToolTip(QCoreApplication.translate("MainWindow", u"Close", None))
         # endif // QT_CONFIG(tooltip)
         self.close_app_btn.setText("")
-        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"start your connection", None))
-        self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"\u8fde\u63a5\u670d\u52a1\u5668", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"\u670d\u52a1\u5668\u5730\u5740\uff1a", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u670d\u52a1\u5668\u5bc6\u94a5\uff1a", None))
-        self.connectButton.setText(QCoreApplication.translate("MainWindow", u"\u8fde\u63a5", None))
-        self.micCheckRadio.setText(QCoreApplication.translate("MainWindow", u"\u9ea6\u514b\u98ce\u68c0\u6d4b", None))
-        self.micRadio.setText(QCoreApplication.translate("MainWindow", u"\u9ea6\u514b\u98ce\u72b6\u6001", None))
-        ___qtablewidgetitem = self.tableWidget.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"\u670d\u52a1\u5668", None));
-        ___qtablewidgetitem1 = self.tableWidget.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"\u5730\u5740", None));
-        ___qtablewidgetitem2 = self.tableWidget.horizontalHeaderItem(2)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"\u5bc6\u94a5", None));
-        ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(3)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"\u64cd\u4f5c", None));
-        ___qtablewidgetitem4 = self.tableWidget.verticalHeaderItem(0)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"dplcz", None));
-
-        __sortingEnabled = self.tableWidget.isSortingEnabled()
-        self.tableWidget.setSortingEnabled(False)
-        ___qtablewidgetitem5 = self.tableWidget.item(0, 0)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"dplcz", None));
-        ___qtablewidgetitem6 = self.tableWidget.item(0, 1)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"111.111.111.111:12345", None));
-        ___qtablewidgetitem7 = self.tableWidget.item(0, 2)
-        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"dplcz", None));
-        self.tableWidget.setSortingEnabled(__sortingEnabled)
-
     # retranslateUi

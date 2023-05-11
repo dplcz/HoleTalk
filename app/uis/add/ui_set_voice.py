@@ -89,9 +89,9 @@ class Ui_Voice_Dialog(QDialog):
         sizePolicy.setHeightForWidth(self.close_app_btn.sizePolicy().hasHeightForWidth())
         self.close_app_btn.setSizePolicy(sizePolicy)
         self.close_app_btn.setMaximumSize(QSize(16777215, 16777215))
+        self.close_app_btn.setFocusPolicy(Qt.NoFocus)
         self.close_app_btn.setContextMenuPolicy(Qt.NoContextMenu)
         self.close_app_btn.setLayoutDirection(Qt.LeftToRight)
-        self.close_app_btn.setFocusPolicy(Qt.NoFocus)
         self.close_app_btn.setStyleSheet(u"background-image: url(:/icons_svg/images/icons_svg/icon_close.svg);")
 
         self.verticalLayout.addWidget(self.close_app_btn)
@@ -104,10 +104,14 @@ class Ui_Voice_Dialog(QDialog):
 
         self.input_slider = QSlider(self.bg)
         self.input_slider.setObjectName(u"input_slider")
-        self.input_slider.setMaximum(100)
-        self.input_slider.setPageStep(5)
-        self.input_slider.setValue(50)
+        self.input_slider.setFocusPolicy(Qt.NoFocus)
+        self.input_slider.setMaximum(10)
+        self.input_slider.setSingleStep(1)
+        self.input_slider.setPageStep(1)
+        self.input_slider.setValue(5)
         self.input_slider.setOrientation(Qt.Horizontal)
+        self.input_slider.setTickPosition(QSlider.TicksAbove)
+        self.input_slider.setTickInterval(1)
 
         self.verticalLayout.addWidget(self.input_slider)
 
@@ -119,10 +123,15 @@ class Ui_Voice_Dialog(QDialog):
 
         self.out_slider = QSlider(self.bg)
         self.out_slider.setObjectName(u"out_slider")
-        self.out_slider.setMaximum(100)
-        self.out_slider.setPageStep(5)
-        self.out_slider.setValue(50)
+        self.out_slider.setFocusPolicy(Qt.NoFocus)
+        self.out_slider.setMaximum(11)
+        self.out_slider.setMinimum(1)
+        self.out_slider.setSingleStep(1)
+        self.out_slider.setPageStep(1)
+        self.out_slider.setValue(8)
         self.out_slider.setOrientation(Qt.Horizontal)
+        self.out_slider.setTickPosition(QSlider.TicksAbove)
+        self.out_slider.setTickInterval(1)
 
         self.verticalLayout.addWidget(self.out_slider)
 
@@ -134,9 +143,17 @@ class Ui_Voice_Dialog(QDialog):
 
         self.check_slider = QSlider(self.bg)
         self.check_slider.setObjectName(u"check_slider")
-        self.check_slider.setMaximum(100)
-        self.check_slider.setPageStep(5)
+        self.check_slider.setFocusPolicy(Qt.NoFocus)
+        self.check_slider.setMaximum(11)
+        self.check_slider.setMinimum(1)
+        self.check_slider.setSingleStep(1)
+        self.check_slider.setPageStep(1)
+        self.check_slider.setValue(6)
         self.check_slider.setOrientation(Qt.Horizontal)
+        self.check_slider.setInvertedAppearance(False)
+        self.check_slider.setInvertedControls(False)
+        self.check_slider.setTickPosition(QSlider.TicksAbove)
+        self.check_slider.setTickInterval(1)
 
         self.verticalLayout.addWidget(self.check_slider)
 

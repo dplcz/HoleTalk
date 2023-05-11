@@ -73,7 +73,7 @@ class UDPClient:
         self._beat = None
         self._recv = None
 
-        self._audio = None
+        self.audio = None
 
         self._ui = ui
 
@@ -81,10 +81,10 @@ class UDPClient:
             self.text_input = Queue()
             self.text_output = Queue()
 
-    def init_audio(self, channels=1, rate=12000, frames_per_buffer=960, bit_format: str = 'int16', threshold=0,
+    def init_audio(self, channels=1, rate=12000, frames_per_buffer=960, bit_format: str = 'int16', threshold=5000,
                    delay=30, input_device=None, output_device=None):
-        self._audio = AudioController(channels, rate, frames_per_buffer, bit_format=bit_format, threshold=threshold,
-                                      delay=delay, input_device_index=input_device, output_device_index=output_device)
+        self.audio = AudioController(channels, rate, frames_per_buffer, bit_format=bit_format, threshold=threshold,
+                                     delay=delay, input_device_index=input_device, output_device_index=output_device)
 
     def _create_request(self, operation, data) -> bytes:
         """
@@ -673,11 +673,8 @@ class UDPClient:
             t_operate.start()
 
             event = threading.Event()
-            self._audio.init_stream(self._sock, self._head, self._connected_addr, 1, event,
-                                    noise=False, stationary=False, logger=self._logger)
-
-    def change_mic(self, flag):
-        self._audio.change_mic(flag)
+            self.audio.init_stream(self._sock, self._head, self._connected_addr, 1, event,
+                                   noise=False, stationary=False, logger=self._logger)
 
     def signal_handler(self, temp_signal, frame):
         self._beat_flag = False

@@ -220,8 +220,11 @@ class MainWindow(QMainWindow):
         self.set = Ui_Voice_Dialog()
         self.set.setWindowFlag(Qt.FramelessWindowHint)
         self.set.setAttribute(Qt.WA_TranslucentBackground)
+        self.set.focusOutEvent = lambda x: self.set.close()
 
         self.set.close_app_btn.clicked.connect(lambda: self.set.close())
+        self.set.out_slider.valueChanged.connect(self.change_volume)
+        self.set.check_slider.valueChanged.connect(self.change_threshold)
 
         # 麦克风和音频
         self.mic = True
@@ -317,39 +320,15 @@ class MainWindow(QMainWindow):
         # ADD MESSAGE BTNS / FRIEND MENUS
         # Add btns to page
         # ///////////////////////////////////////////////////////////////
-
-        # add_user = [
-        #     {
-        #         "user_image": "images/users/cat.png",
-        #         "user_name": "Tom",
-        #         "user_description": "Did you see a mouse?",
-        #         "user_status": "online",
-        #         "unread_messages": 2,
-        #         "is_active": False
-        #     },
-        #     {
-        #         "user_image": "images/users/mouse.png",
-        #         "user_name": "Jerry",
-        #         "user_description": "I think I saw a cat...",
-        #         "user_status": "busy",
-        #         "unread_messages": 1,
-        #         "is_active": False
-        #     },
-        #     {
-        #         "user_image": "images/users/me.png",
-        #         "user_name": "Me From The Future",
-        #         "user_description": "Lottery result...",
-        #         "user_status": "invisible",
-        #         "unread_messages": 0,
-        #         "is_active": False
-        #     }
-        # ]
         self.setup_servers()
 
         self.client = None
         self.client_thread = None
         self.text_thread = None
         self.conf = Conf()
+
+        self._start_threshold = 4000
+        self._start_volume = 8
         # SHOW MAIN WINDOW
         # ///////////////////////////////////////////////////////////////
         self.show()
@@ -484,7 +463,7 @@ class MainWindow(QMainWindow):
                                    bit_format=self.conf.get_item('client', 'bit_format'),
                                    input_device=self.conf.get_item('client', 'input_device'),
                                    output_device=self.conf.get_item('client', 'output_device'),
-                                   threshold=self.conf.get_item('client', 'threshold'),
+                                   threshold=self._start_threshold,
                                    delay=self.conf.get_item('client', 'delay'), )
 
             self.connect_flag = True
@@ -636,25 +615,42 @@ class MainWindow(QMainWindow):
         QTimer.singleShot(300, lambda: self.dlg.move(actual_pos.x(), actual_pos.y()))
 
     def set_dialog(self):
+        self.set.setFocus()
         self.set.show()
 
     def change_mic(self):
         self.mic = not self.mic
         if self.mic:
             self.chat.page.btn_mic_top.setStyleSheet('background-image: url(:/icons_svg/images/icons_svg/mic.svg);')
-            self.client.change_mic(self.mic)
+            self.client.audio.change_mic(self.mic)
         else:
             self.chat.page.btn_mic_top.setStyleSheet(
                 'background-image: url(:/icons_svg/images/icons_svg/ic_mic_off.svg);')
-            self.client.change_mic(self.mic)
+            self.client.audio.change_mic(self.mic)
 
     def change_voice(self):
         self.voice = not self.voice
         if self.voice:
             self.chat.page.btn_voice_top.setStyleSheet('background-image: url(:/icons_svg/images/icons_svg/voice.svg);')
+            self.client.audio.change_voice(self.voice)
         else:
             self.chat.page.btn_voice_top.setStyleSheet(
                 'background-image: url(:/icons_svg/images/icons_svg/voice_quite.svg);')
+            self.client.audio.change_voice(self.voice)
+
+    def change_volume(self):
+        slider = self.sender()
+        if self.client:
+            self.client.audio.change_volume(slider.value())
+        else:
+            self._start_volume = slider.value()
+
+    def change_threshold(self):
+        slider = self.sender()
+        if self.client:
+            self.client.audio.change_threshold(slider.value() * 800)
+        else:
+            self._start_threshold = slider.value() * 800
 
 
 # SETTINGS WHEN TO START

@@ -53,7 +53,6 @@ class AudioController:
         :param opus_rate: opus编码采样率（默认跟rate相关）
         :param sock: udp socket
         """
-
         self._channels = channels
         self._rate = rate
         self._chunk_size = frames_per_buffer
@@ -61,6 +60,7 @@ class AudioController:
         self._input_device_index = input_device_index
         self._output_device_index = output_device_index
         self._threshold = threshold
+        self._volume_rate = 1.25
         self._delay = delay
 
         self._sample_size = self._bit_dict[bit_format]
@@ -101,6 +101,7 @@ class AudioController:
         self._output_queue = None
 
         self._mic_flag = True
+        self._voice_flag = True
 
         self._logger = logging.getLogger(__name__)
 
@@ -166,7 +167,6 @@ class AudioController:
         :return:
         """
         if save:
-
             try:
                 if concat:
                     temp = []
@@ -223,7 +223,7 @@ class AudioController:
         """
         self._input_active = not self._input_active
         if self._input_active:
-            # self._logger.info('开始收音')
+            # self._logger.info('开始收音{}'.format(self._threshold))
             pass
         else:
             pass
@@ -317,19 +317,23 @@ class AudioController:
             self._opus_decode(temp, save=True, concat=True)
         elif len(temp) == 1:
             self._opus_decode(temp[0], save=True, concat=False)
-        if not self._output_queue.empty():
-            if array:
-                temp = np.frombuffer(self._output_queue.get(),
-                                     dtype=self._dtype).reshape(
-                    (self._chunk_size, self._channels))
-                outdata[:] = temp
+        if self._voice_flag:
+            if not self._output_queue.empty():
+                if array:
+                    temp = np.frombuffer(self._output_queue.get(),
+                                         dtype=self._dtype).reshape(
+                        (self._chunk_size, self._channels)) // self._volume_rate
+                    outdata[:] = temp
+                else:
+                    outdata[:] = self._output_queue.get()
             else:
-                outdata[:] = self._output_queue.get()
+                if array:
+                    outdata.fill(0)
+                else:
+                    outdata[:] = b'\x00' * self._n_frames
         else:
-            if array:
-                outdata.fill(0)
-            else:
-                outdata[:] = b'\x00' * self._n_frames
+            self._output_queue.get()
+            outdata[:] = 0
 
     # def _record_callback(self, indata, frames, time, status):
     #     # 检测麦克风音量大小
@@ -527,6 +531,15 @@ class AudioController:
 
     def change_mic(self, flag):
         self._mic_flag = flag
+
+    def change_voice(self, flag):
+        self._voice_flag = flag
+
+    def change_threshold(self, value):
+        self._threshold = value
+
+    def change_volume(self, value):
+        self._volume_rate = 10 / value
 
 
 if __name__ == '__main__':
