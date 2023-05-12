@@ -240,7 +240,7 @@ class MainWindow(QMainWindow):
         self.mic = True
         self.voice = True
 
-        self.connect_flag = False
+        self._connect_flag = False
 
         self.context_menu = QMenu(self)
         self.action_delete = QAction('删除', self)
@@ -345,10 +345,10 @@ class MainWindow(QMainWindow):
 
     def close_all(self):
         if self._client_thread:
-            self._client_thread.terminate()
+            self.client.handle_stop_all()
             self._client_thread.wait()
         if self._text_thread:
-            self._text_thread.terminate()
+            self._connect_flag = False
             self._text_thread.wait()
         self.close()
 
@@ -414,9 +414,9 @@ class MainWindow(QMainWindow):
                     self.ui.app_pages.setCurrentWidget(self.ui.chat)
                 return
             else:
-                self._client_thread.terminate()
+                self.client.handle_stop_all()
                 self._client_thread.wait()
-                self._text_thread.terminate()
+                self._connect_flag = False
                 self._text_thread.wait()
 
             # UNSELECT CHATS
@@ -475,7 +475,7 @@ class MainWindow(QMainWindow):
                                    threshold=self._start_threshold,
                                    delay=self.conf.get_item('client', 'delay'), )
 
-            self.connect_flag = True
+            self._connect_flag = True
 
             self._client_thread = MyThread(self.start_connect, btn)
             self._client_thread.add_msg_signal.connect(self.add_msg)
@@ -495,28 +495,38 @@ class MainWindow(QMainWindow):
             btn.change_status_color('online')
             btn.update()
             self._client_thread.add_msg_signal.emit(("enter 'wait' or USER(CHANNEL) NUMBER", True, True, False))
-            text = self.client.text_input.get()
-            if text == 'wait':
-                self._client_thread.add_msg_signal.emit(('start to wait for connecting...', True, True, False))
-                self.client.start_connect(None, True)
-            else:
-                self.client.text_input.put(text)
-                self._client_thread.add_msg_signal.emit(('start to connect...', True, True, False))
-                self.client.start_connect(True, True)
+            while self._connect_flag:
+                try:
+                    text = self.client.text_input.get(timeout=0.5)
+                    if text == 'wait':
+                        self._client_thread.add_msg_signal.emit(
+                            ('start to wait for connecting...', True, True, False))
+                        self.client.start_connect(None, True)
+                        break
+                    else:
+                        self.client.text_input.put(text)
+                        self._client_thread.add_msg_signal.emit(('start to connect...', True, True, False))
+                        self.client.start_connect(True, True)
+                        break
+                except Exception:
+                    pass
         else:
             btn.change_status_color('invisible')
             btn.update()
-            self.connect_flag = False
+            self._connect_flag = False
 
     def get_server_text(self):
-        while self.connect_flag:
-            text = self.client.text_output.get()
-            if text[1] == 'info' or text[1] == 'error':
-                self._text_thread.add_msg_signal.emit(text)
-            elif text[1] == 'statistics':
-                self._text_thread.add_statistics_signal.emit(text)
-            elif text[1] == 'connect_error':
-                self._text_thread.add_statistics_signal.emit(text)
+        while self._connect_flag:
+            try:
+                text = self.client.text_output.get(timeout=0.5)
+                if text[1] == 'info' or text[1] == 'error':
+                    self._text_thread.add_msg_signal.emit(text)
+                elif text[1] == 'statistics':
+                    self._text_thread.add_statistics_signal.emit(text)
+                elif text[1] == 'connect_error':
+                    self._text_thread.add_statistics_signal.emit(text)
+            except Exception:
+                continue
 
     def add_msg(self, text):
         if text[2]:

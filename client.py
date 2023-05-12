@@ -68,10 +68,11 @@ class UDPClient:
         self._q_msg = Queue(maxsize=10)
         self._q_clear_times = 5
 
-        self._stop_flag = False
+        self._stop_flag = True
         self._cur_channel = 0
         self._beat = None
         self._recv = None
+        self._t_operate = None
 
         self.audio = None
 
@@ -239,7 +240,7 @@ class UDPClient:
             #         time.sleep(0.1)
             if not self._ping(channel=self._cur_channel if self._cur_connections_count > 0 else 0):
                 self._solve_text('heart beat error!!', 'error')
-                self._stop_flag = True
+                self._stop_flag = False
                 break
 
     def _init_connect(self, addr):
@@ -260,7 +261,7 @@ class UDPClient:
         for _ in range(0, 3):
             self._sock.sendto(send_data, (self._host, self._port))
             time.sleep(0.05)
-        self._solve_text('send check to server', 'debug')
+        self._solve_text('send check to server', 'info')
         self._cur_channel = int(channel)
 
     def _op_common(self, data):
@@ -270,7 +271,7 @@ class UDPClient:
         :param data: 命令数据
         :return:
         """
-        self._solve_text('receive {} hole request (common)'.format(data[2]), 'debug')
+        self._solve_text('receive {} hole request (common)'.format(data[2]), 'info')
         ip, port, channel = data[2].split(' ')
         self._destination_addr = (ip, int(port))
         if self._ping((ip, port)):
@@ -283,7 +284,7 @@ class UDPClient:
         :param data: 命令数据
         :return:
         """
-        self._solve_text('receive {} hole request (sequence)'.format(data[2]), 'debug')
+        self._solve_text('receive {} hole request (sequence)'.format(data[2]), 'info')
         ip, port, channel = data[2].split(' ')
         port = int(port)
         self._destination_addr = (ip, None)
@@ -324,7 +325,7 @@ class UDPClient:
         """
         ip, port, channel = data[2].split(' ')
         self._destination_addr = (ip, int(port))
-        self._solve_text('recheck ping to {}'.format(self._destination_addr), 'debug')
+        self._solve_text('recheck ping to {}'.format(self._destination_addr), 'info')
         if self._ping(self._destination_addr, wait_response=True):
             self._recheck_flag = True
             self._cur_channel = int(channel)
@@ -346,7 +347,7 @@ class UDPClient:
             elif self._destination_addr[1] is None and self._destination_addr[0] == addr[0]:
                 return self._init_connect(addr)
         elif addr in self._connected_addr.list_set():
-            self._solve_text('received ping from {}'.format(addr), 'debug')
+            self._solve_text('received ping from {}'.format(addr), 'info')
             self._connected_addr.set_expire(addr, self._addr_expire_time, Queue(maxsize=self._queue_max_size))
             self._cur_sec.set_expire(addr, self._addr_expire_time, 0)
             return True
@@ -359,7 +360,7 @@ class UDPClient:
         """
 
         double_sequence = False
-        while True:
+        while self._stop_flag:
             data, addr = self._q_msg.get()
             if data[1] == 'common' and data[2] not in list(self._hole_request.keys()):
                 self._op_common(data)
@@ -438,7 +439,7 @@ class UDPClient:
         change_timeout_flag = False
         change_value = 2
         self._sock.settimeout(change_value)
-        while True:
+        while self._stop_flag:
             if change_timeout_flag:
                 change_value = 5 if change_value == 2 else 2
                 self._sock.settimeout(change_value)
@@ -613,7 +614,7 @@ class UDPClient:
                 self._sock.settimeout(1)
             sequence = False
             double_sequence = False
-            while True:
+            while self._stop_flag:
                 try:
                     source_data, addr = self._sock.recvfrom(1024)
                     data = self._solve_response(source_data)
@@ -664,23 +665,34 @@ class UDPClient:
                     self._beat_flag = False
                     self._beat.join()
                     return False
-            self._sock.settimeout(None)
-            self._solve_text('have fun', 'info')
+            if self._stop_flag:
+                self._sock.settimeout(None)
+                self._solve_text('have fun', 'info')
 
-            self._recv = self._thread_class(target=self._recv_data)
-            self._recv.start()
+                self._recv = self._thread_class(target=self._recv_data)
+                self._recv.start()
 
-            t_operate = self._thread_class(target=self._operate_command)
-            t_operate.start()
+                self._t_operate = self._thread_class(target=self._operate_command)
+                self._t_operate.start()
 
-            event = threading.Event()
-            self.audio.init_stream(self._sock, self._head, self._connected_addr, 1, event,
-                                   noise=False, stationary=False, logger=self._logger)
+                event = threading.Event()
+                self.audio.init_stream(self._sock, self._head, self._connected_addr, 1, event,
+                                       noise=False, stationary=False, logger=self._logger)
 
     def signal_handler(self, temp_signal, frame):
         self._beat_flag = False
         self._beat.join()
         sys.exit(0)
+
+    def handle_stop_all(self):
+        self._stop_flag = False
+        self._beat_flag = False
+        if self._recv:
+            self._recv.join()
+        if self._t_operate:
+            self._t_operate.join()
+        if self._beat:
+            self._beat.join()
 
 
 if __name__ == '__main__':
