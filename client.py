@@ -550,14 +550,15 @@ class UDPClient:
                 port_test.append(int(data.decode('utf-8').split(',')[-1].strip(') ')))
             if (max(port_test) - min(port_test)) < len(port_test) * 5:
                 self._nat_type = 1
-                self._solve_text('sequence Symmetric', 'info')
+                self._solve_text('sequence Symmetric', 'nat')
                 return 1
             else:
                 self._nat_type = 3
-                self._solve_text('random Symmetric(not supported)', 'info')
+                self._solve_text('random Symmetric(not supported)', 'nat')
                 raise KeyboardInterrupt
         else:
             self._nat_type = 0
+            self._solve_text('Cone', 'nat')
             return 0
 
     def list_addr_active(self, show=True, registry=True):

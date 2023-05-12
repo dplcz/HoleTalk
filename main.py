@@ -30,6 +30,7 @@ from app.uis.login.ui_login import Ui_Login  # Login / Splash Screen
 from app.uis.main_window.ui_main import Ui_MainWindow  # MainWindow
 from app.uis.add.ui_add_server import Ui_Add_Dialog
 from app.uis.add.ui_set_voice import Ui_Voice_Dialog
+from app.uis.add.ui_test_dialog import Ui_Test_Dialog
 from app.uis.chat.page_messages import Chat  # Chat Widget
 # Modules
 import app.modules.ui_functions.functions as ui_functions
@@ -38,6 +39,7 @@ from app.modules.datamodel.tools import *
 
 from client import UDPClient
 from conf.config import Conf
+from client import get_net_nat
 
 # GLOBALS
 # ///////////////////////////////////////////////////////////////
@@ -48,6 +50,7 @@ number_pattern = re.compile('\d+')
 class MyThread(QThread):
     add_msg_signal = Signal(tuple)
     add_statistics_signal = Signal(tuple)
+    result_signal = Signal(tuple)
 
     def __init__(self, target, *args):
         super().__init__()
@@ -55,7 +58,9 @@ class MyThread(QThread):
         self.args = args
 
     def run(self):
-        self._func(*self.args)
+        temp = self._func(*self.args)
+        if temp:
+            self.result_signal.emit(temp)
 
 
 # LOGIN
@@ -226,6 +231,11 @@ class MainWindow(QMainWindow):
         self.set.out_slider.valueChanged.connect(self.change_volume)
         self.set.check_slider.valueChanged.connect(self.change_threshold)
 
+        self.test_dlg = Ui_Test_Dialog()
+        self.test_dlg.setWindowFlag(Qt.FramelessWindowHint)
+        self.test_dlg.setAttribute(Qt.WA_TranslucentBackground)
+        self.test_dlg.close_app_btn.clicked.connect(lambda: self.test_dlg.close())
+
         # 麦克风和音频
         self.mic = True
         self.voice = True
@@ -274,7 +284,7 @@ class MainWindow(QMainWindow):
             self,
             "custom_btn_bottom_1",
             "images/icons_svg/icon_more_options.svg",
-            "More options, test with many words"
+            "Test your nat type"
         )
         self.custom_btn_bottom_2 = LeftMenuButton(
             self,
@@ -290,8 +300,7 @@ class MainWindow(QMainWindow):
         self.custom_btn_top.released.connect(self.add_dialog)
         self.custom_btn_bottom_2.released.connect(self.set_dialog)
         # self.custom_btn_top.released.connect(lambda: print(f"{self.custom_btn_top.objectName()}: released"))
-        self.custom_btn_bottom_1.clicked.connect(lambda: print(f"{self.custom_btn_bottom_1.objectName()}: clicked"))
-        self.custom_btn_bottom_1.released.connect(lambda: print(f"{self.custom_btn_bottom_1.objectName()}: released"))
+        self.custom_btn_bottom_1.released.connect(self.test_nat_type)
 
         def switch2connect():
             if self.ui.chat_layout.count() > 0:
@@ -323,8 +332,9 @@ class MainWindow(QMainWindow):
         self.setup_servers()
 
         self.client = None
-        self.client_thread = None
-        self.text_thread = None
+        self._client_thread = None
+        self._text_thread = None
+        self._test_thread = None
         self.conf = Conf()
 
         self._start_threshold = 4000
@@ -334,12 +344,12 @@ class MainWindow(QMainWindow):
         self.show()
 
     def close_all(self):
-        if self.client_thread:
-            self.client_thread.terminate()
-            self.client_thread.wait()
-        if self.text_thread:
-            self.text_thread.terminate()
-            self.text_thread.wait()
+        if self._client_thread:
+            self._client_thread.terminate()
+            self._client_thread.wait()
+        if self._text_thread:
+            self._text_thread.terminate()
+            self._text_thread.wait()
         self.close()
 
     def setup_servers(self):
@@ -404,10 +414,10 @@ class MainWindow(QMainWindow):
                     self.ui.app_pages.setCurrentWidget(self.ui.chat)
                 return
             else:
-                self.client_thread.terminate()
-                self.client_thread.wait()
-                self.text_thread.terminate()
-                self.text_thread.wait()
+                self._client_thread.terminate()
+                self._client_thread.wait()
+                self._text_thread.terminate()
+                self._text_thread.wait()
 
             # UNSELECT CHATS
         ui_functions.UiFunctions.deselect_chat_message(self, btn.objectName())
@@ -467,14 +477,14 @@ class MainWindow(QMainWindow):
 
             self.connect_flag = True
 
-            self.client_thread = MyThread(self.start_connect, btn)
-            self.client_thread.add_msg_signal.connect(self.add_msg)
-            self.client_thread.start()
+            self._client_thread = MyThread(self.start_connect, btn)
+            self._client_thread.add_msg_signal.connect(self.add_msg)
+            self._client_thread.start()
 
-            self.text_thread = MyThread(self.get_server_text)
-            self.text_thread.add_msg_signal.connect(self.add_msg)
-            self.text_thread.add_statistics_signal.connect(self.set_statistics_info)
-            self.text_thread.start()
+            self._text_thread = MyThread(self.get_server_text)
+            self._text_thread.add_msg_signal.connect(self.add_msg)
+            self._text_thread.add_statistics_signal.connect(self.set_statistics_info)
+            self._text_thread.start()
             # self.client.start_connect(registry=False)
 
         # DEBUG
@@ -484,14 +494,14 @@ class MainWindow(QMainWindow):
         if self.client.list_addr_active(show=True) is not None:
             btn.change_status_color('online')
             btn.update()
-            self.client_thread.add_msg_signal.emit(("enter 'wait' or USER(CHANNEL) NUMBER", True, True, False))
+            self._client_thread.add_msg_signal.emit(("enter 'wait' or USER(CHANNEL) NUMBER", True, True, False))
             text = self.client.text_input.get()
             if text == 'wait':
-                self.client_thread.add_msg_signal.emit(('start to wait for connecting...', True, True, False))
+                self._client_thread.add_msg_signal.emit(('start to wait for connecting...', True, True, False))
                 self.client.start_connect(None, True)
             else:
                 self.client.text_input.put(text)
-                self.client_thread.add_msg_signal.emit(('start to connect...', True, True, False))
+                self._client_thread.add_msg_signal.emit(('start to connect...', True, True, False))
                 self.client.start_connect(True, True)
         else:
             btn.change_status_color('invisible')
@@ -502,11 +512,11 @@ class MainWindow(QMainWindow):
         while self.connect_flag:
             text = self.client.text_output.get()
             if text[1] == 'info' or text[1] == 'error':
-                self.text_thread.add_msg_signal.emit(text)
+                self._text_thread.add_msg_signal.emit(text)
             elif text[1] == 'statistics':
-                self.text_thread.add_statistics_signal.emit(text)
+                self._text_thread.add_statistics_signal.emit(text)
             elif text[1] == 'connect_error':
-                self.text_thread.add_statistics_signal.emit(text)
+                self._text_thread.add_statistics_signal.emit(text)
 
     def add_msg(self, text):
         if text[2]:
@@ -651,6 +661,23 @@ class MainWindow(QMainWindow):
             self.client.audio.change_threshold(slider.value() * 800)
         else:
             self._start_threshold = slider.value() * 800
+
+    def test_nat_type(self):
+        self.test_dlg.close_app_btn.hide()
+        self.test_dlg.show()
+
+        def solve_result(result):
+            self.test_dlg.testText.setText('Finished')
+            self.test_dlg.resultText.setText(result[0])
+            if 'Symmetric' in result[0]:
+                self.conf.set_section('client', 'nat', '1')
+            else:
+                self.conf.set_section('client', 'nat', '0')
+            self.test_dlg.close_app_btn.show()
+
+        self._test_thread = MyThread(target=get_net_nat)
+        self._test_thread.result_signal.connect(solve_result)
+        self._test_thread.start()
 
 
 # SETTINGS WHEN TO START
