@@ -377,7 +377,6 @@ class MainWindow(QMainWindow):
                 self.menu.setContextMenuPolicy(Qt.CustomContextMenu)
                 self.menu.customContextMenuRequested.connect(self.show_context_menu)
 
-                # self.menu.released.connect(self.btn_released)
                 self.ui.messages_layout.addWidget(self.menu)
                 index += 1
 
@@ -516,7 +515,7 @@ class MainWindow(QMainWindow):
     def set_statistics_info(self, text):
         numbers = re.findall(number_pattern, text[0])
         if len(numbers) != 0:
-            self.ui.label_top.setText(' '.join(numbers))
+            self.ui.label_top.setText('D:{}ms J:{}ms C:{}'.format(numbers[0], numbers[1], numbers[3]))
         else:
             self.ui.label_top.setText(text[0])
 
@@ -548,13 +547,6 @@ class MainWindow(QMainWindow):
                 if widget:
                     self.chat.page.chat_messages_layout.removeItem(item)
                     widget.deleteLater()
-
-    # GET BTN RELEASED
-    # ///////////////////////////////////////////////////////////////
-    def btn_released(self):
-        # GET BT CLICKED
-        btn = self.sender()
-        print(F"Button {btn.objectName()}, released!")
 
     # RESIZE EVENT
     # Whenever the window is resized, this event will be triggered
@@ -591,12 +583,20 @@ class MainWindow(QMainWindow):
                     self.shacke_window()
 
             if servername != '' and address != '' and password != '':
-                self.dlg.user_description.setText(f"Add Server Successfully!")
-                self.dlg.user_description.setStyleSheet("#user_description { color: #bdff00 }")
-                self.dlg.servername.setStyleSheet("#servername:focus { border: 3px solid #bdff00; }")
-                self.dlg.address.setStyleSheet("#address:focus { border: 3px solid #bdff00; }")
-                self.dlg.password.setStyleSheet("#password:focus { border: 3px solid #bdff00; }")
-                QTimer.singleShot(1200, lambda: after_enter())
+                try:
+                    server, port = address.split(':')
+                except Exception:
+                    self.dlg.servername.setStyleSheet("#servername:focus { border: 3px solid rgb(255, 0, 127); }")
+                    self.dlg.address.setStyleSheet("#address:focus { border: 3px solid rgb(255, 0, 127); }")
+                    self.dlg.password.setStyleSheet("#password:focus { border: 3px solid rgb(255, 0, 127); }")
+                    self.shacke_window()
+                else:
+                    self.dlg.user_description.setText(f"Add Server Successfully!")
+                    self.dlg.user_description.setStyleSheet("#user_description { color: #bdff00 }")
+                    self.dlg.servername.setStyleSheet("#servername:focus { border: 3px solid #bdff00; }")
+                    self.dlg.address.setStyleSheet("#address:focus { border: 3px solid #bdff00; }")
+                    self.dlg.password.setStyleSheet("#password:focus { border: 3px solid #bdff00; }")
+                    QTimer.singleShot(1200, lambda: after_enter())
             else:
                 self.dlg.servername.setStyleSheet("#servername:focus { border: 3px solid rgb(255, 0, 127); }")
                 self.dlg.address.setStyleSheet("#address:focus { border: 3px solid rgb(255, 0, 127); }")
