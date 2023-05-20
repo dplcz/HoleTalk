@@ -73,6 +73,7 @@ class UDPClient:
         self._beat = None
         self._recv = None
         self._t_operate = None
+        self._event = None
 
         self.audio = None
 
@@ -361,7 +362,10 @@ class UDPClient:
 
         double_sequence = False
         while self._stop_flag:
-            data, addr = self._q_msg.get()
+            try:
+                data, addr = self._q_msg.get(timeout=1)
+            except Exception:
+                continue
             if data[1] == 'common' and data[2] not in list(self._hole_request.keys()):
                 self._op_common(data)
                 self._hole_request.set_expire(data[2], 30, None)
@@ -675,8 +679,8 @@ class UDPClient:
                 self._t_operate = self._thread_class(target=self._operate_command)
                 self._t_operate.start()
 
-                event = threading.Event()
-                self.audio.init_stream(self._sock, self._head, self._connected_addr, 1, event,
+                self._event = threading.Event()
+                self.audio.init_stream(self._sock, self._head, self._connected_addr, 1, self._event,
                                        noise=False, stationary=False, logger=self._logger)
 
     def signal_handler(self, temp_signal, frame):
@@ -693,6 +697,8 @@ class UDPClient:
             self._t_operate.join()
         if self._beat:
             self._beat.join()
+        if self._event:
+            self._event.set()
 
 
 if __name__ == '__main__':

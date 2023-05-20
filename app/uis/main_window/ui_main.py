@@ -1167,7 +1167,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.stylesheet)
 
         self.retranslateUi(MainWindow)
-        self.close_app_btn.clicked.connect(MainWindow.close)
+        # self.close_app_btn.clicked.connect(MainWindow.close)
 
         self.app_pages.setCurrentIndex(1)
 

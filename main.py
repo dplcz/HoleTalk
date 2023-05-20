@@ -344,11 +344,11 @@ class MainWindow(QMainWindow):
         self.show()
 
     def close_all(self):
+        self._connect_flag = False
         if self._client_thread:
             self.client.handle_stop_all()
             self._client_thread.wait()
         if self._text_thread:
-            self._connect_flag = False
             self._text_thread.wait()
         self.close()
 
@@ -414,9 +414,9 @@ class MainWindow(QMainWindow):
                     self.ui.app_pages.setCurrentWidget(self.ui.chat)
                 return
             else:
+                self._connect_flag = False
                 self.client.handle_stop_all()
                 self._client_thread.wait()
-                self._connect_flag = False
                 self._text_thread.wait()
 
             # UNSELECT CHATS
@@ -502,12 +502,12 @@ class MainWindow(QMainWindow):
                         self._client_thread.add_msg_signal.emit(
                             ('start to wait for connecting...', True, True, False))
                         self.client.start_connect(None, True)
-                        break
+                        return None
                     else:
                         self.client.text_input.put(text)
                         self._client_thread.add_msg_signal.emit(('start to connect...', True, True, False))
                         self.client.start_connect(True, True)
-                        break
+                        return None
                 except Exception:
                     pass
         else:
