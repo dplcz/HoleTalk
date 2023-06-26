@@ -6,3 +6,4 @@ numpy==1.23.5
 scipy==1.9.3
 pyside6
 pyinstaller==5.7.0
+ntplib
