@@ -5,6 +5,7 @@ import logging
 from queue import Queue
 import time as tm
 
+import ntplib
 # import noisereduce as nr
 import numpy as np
 from scipy import fftpack
@@ -104,6 +105,9 @@ class AudioController:
         self._voice_flag = True
 
         self._logger = logging.getLogger(__name__)
+
+        ntp_client = ntplib.NTPClient()
+        self._time_offset = int(ntp_client.request('ntp.aliyun.com').offset * 1000)
 
     def _judge_voice(self, indata: np.ndarray) -> bool:
         """
@@ -246,7 +250,7 @@ class AudioController:
         return fs[fs_index]
 
     def _stream_send(self, encode_data):
-        timestamp = int(tm.time() * 1000).to_bytes(6, 'big')
+        timestamp = (int(tm.time() * 1000) + self._time_offset).to_bytes(6, 'big')
         cur_seq = self._current_seq.to_bytes(2, 'big')
         encode_data = cur_seq + timestamp + encode_data
         addr_temp = self._destination_addr.list_set()

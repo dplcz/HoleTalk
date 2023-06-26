@@ -8,6 +8,7 @@ import socket
 import json
 import threading
 from queue import Queue
+import ntplib
 
 from stun.cli import get_net_nat
 from audio.controller_sd import AudioController
@@ -82,6 +83,9 @@ class UDPClient:
         if self._ui:
             self.text_input = Queue()
             self.text_output = Queue()
+
+        ntp_client = ntplib.NTPClient()
+        self._time_offset = int(ntp_client.request('ntp.aliyun.com').offset * 1000)
 
     def init_audio(self, channels=1, rate=12000, frames_per_buffer=960, bit_format: str = 'int16', threshold=5000,
                    delay=30, input_device=None, output_device=None):
@@ -487,7 +491,7 @@ class UDPClient:
 
                     recv_times += 1
                     receive_time = int(time.time() * 1000)
-                    delay.append(abs(receive_time - send_time))
+                    delay.append(abs(receive_time - send_time + self._time_offset))
                     jitter.append(max(delay) - min(delay))
                     if recv_times % (100 * self._cur_connections_count) == 0 and cur_sec:
                         temp_length = len(self._connected_addr.list_set())
