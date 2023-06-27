@@ -535,7 +535,7 @@ class MainWindow(QMainWindow):
     def set_statistics_info(self, text):
         numbers = re.findall(number_pattern, text[0])
         if len(numbers) != 0:
-            self.ui.label_top.setText('J:{}ms C:{}'.format(numbers[1], numbers[3]))
+            self.ui.label_top.setText('D:{}ms J:{}ms C:{}'.format(numbers[0], numbers[1], numbers[3]))
         else:
             self.ui.label_top.setText(text[0])
 
