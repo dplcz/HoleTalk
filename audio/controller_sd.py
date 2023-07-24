@@ -64,6 +64,8 @@ class AudioController:
         self._volume_rate = 1.25
         self._delay = delay
 
+        self._mtu = 1400
+
         self._sample_size = self._bit_dict[bit_format]
         self._frames_per_second = 1
 
@@ -108,6 +110,22 @@ class AudioController:
 
         ntp_client = ntplib.NTPClient()
         self._time_offset = int(ntp_client.request('ntp.aliyun.com').offset * 1000)
+
+    def _split_packet(self, data):
+        packets = []
+        packet_size = self._mtu - 28  # 28 bytes for UDP header
+        num_packets = (len(data) + packet_size - 1) // packet_size
+
+        if num_packets > 64:
+            return []
+
+        for i in range(num_packets):
+            start = i * packet_size
+            end = start + packet_size
+            # packets.append(data[start:end])
+            yield data[start:end], i
+
+        # return packets, len(packets)
 
     def _judge_voice(self, indata: np.ndarray) -> bool:
         """
@@ -250,21 +268,24 @@ class AudioController:
         return fs[fs_index]
 
     def _stream_send(self, encode_data):
-        timestamp = (int(tm.time() * 1000) + self._time_offset).to_bytes(6, 'big')
+
         cur_seq = self._current_seq.to_bytes(2, 'big')
-        encode_data = cur_seq + timestamp + encode_data
-        addr_temp = self._destination_addr.list_set()
-        try:
-            if len(addr_temp) > 0:
-                for addr in addr_temp:
-                    self._logger.debug(len(encode_data))
-                    self._sock.sendto(encode_data, addr)
-                if self._current_seq == 999:
-                    self._current_seq = 0
-                self._current_seq += 1
-        except OSError:
-            self._logger.error('end stream')
-            raise sd.CallbackStop
+        for packet_data, cur_slice in self._split_packet(encode_data):
+            timestamp = (int(tm.time() * 1000) + self._time_offset).to_bytes(6, 'big')
+            cur_slice = cur_slice.to_bytes(1, 'big')
+            encode_data = cur_seq + cur_slice + timestamp + packet_data
+            addr_temp = self._destination_addr.list_set()
+            try:
+                if len(addr_temp) > 0:
+                    for addr in addr_temp:
+                        self._logger.debug(len(encode_data))
+                        self._sock.sendto(encode_data, addr)
+                    if self._current_seq == 999:
+                        self._current_seq = 0
+                    self._current_seq += 1
+            except OSError:
+                self._logger.error('end stream')
+                raise sd.CallbackStop
 
     def _stream_callback(self, indata, outdata, frames, time, status):
         array = False

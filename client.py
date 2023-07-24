@@ -434,6 +434,10 @@ class UDPClient:
 
         :return:
         """
+        packet_list = []
+        last_sec = -1
+        last_slice = -1
+
         temp_times = 0
         reconnect_times = 0
         recv_times = 0
@@ -471,12 +475,27 @@ class UDPClient:
                 else:
                     self._connected_addr.set_expire(addr, self._addr_expire_time, Queue(maxsize=self._queue_max_size))
                     self._cur_sec.set_expire(addr, self._addr_expire_time, 0)
-                    cur_sec, send_time, source_data = int.from_bytes(source_data[0:2], 'big'), int.from_bytes(
-                        source_data[2:8], 'big'), source_data[8:]
+                    cur_sec, cur_slice, send_time, source_data = (int.from_bytes(source_data[0:2],
+                                                                                 'big'),
+                                                                  int.from_bytes(source_data[2:3],
+                                                                                 'big'),
+                                                                  int.from_bytes(source_data[3:9], 'big'),
+                                                                  source_data[9:])
+
+                    if cur_slice == last_slice + 1 and last_sec == cur_sec:
+                        packet_list.append(source_data)
+                        continue
+                    else:
+                        concat_data = b''.join(packet_list)
+                        packet_list.clear()
+                        packet_list.append(source_data)
+                        last_slice = -1
 
                     if sec_error_times >= 20:
                         self._cur_sec[addr] = cur_sec
                         sec_error_times = 0
+                    if last_sec < 0:
+                        last_sec = cur_sec
                     if cur_sec < self._cur_sec[addr]:
                         sec_error_times += 1
                         continue
@@ -487,6 +506,8 @@ class UDPClient:
                         if temp + 1 != cur_sec:
                             loss_packet += cur_sec - temp
                         self._cur_sec[addr] = cur_sec
+                        last_sec = cur_sec
+                        last_slice = -1
                         sec_error_times = 0
 
                     recv_times += 1
@@ -505,7 +526,7 @@ class UDPClient:
                         loss_packet = 0
                         delay.clear()
                         jitter.clear()
-                    self._connected_addr[addr].put(source_data)
+                    self._connected_addr[addr].put(concat_data)
             except ConnectionResetError:
                 temp_set = self._connected_addr.list_set()
                 if len(temp_set) < self._cur_connections_count or 1 <= reconnect_times < 5:
